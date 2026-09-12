@@ -1,5 +1,6 @@
 const pool = require("./db");
 
+// Job: Actually perform the operation
 const getUsers = async (req, res) => {
   try {
     const [rows] = await pool.execute("SELECT id, name, email FROM users");
