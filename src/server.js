@@ -17,46 +17,6 @@ app.get("/", (req, res) => {
 app.use("/api/users", userRoutes);
 
 
-app.get("/api/users/:id", async (req, res) => {
-  try {
-    const userId = req.params.id;
-
-    const [rows] = await pool.execute(
-      "SELECT id, name, email FROM users WHERE id = ?",
-      [userId],
-    );
-
-    res.json(rows);
-  } catch (Err) {
-    console.error(Err);
-    res.status(500).json({
-      message: "failed to fetch users",
-    });
-  }
-});
-
-// adding / creating user
-
-app.post("/api/users", async (req, res) => {
-  try {
-    const { name, email, password } = req.body;
-
-    const [result] = await pool.execute(
-      "INSERT INTO users (name, email, password) VALUES (?, ?, ?)",
-      [name, email, password],
-    );
-
-    console.log("user created  successfully");
-
-    res.status(201).json({
-      message: "user created",
-      userId: result.insertId,
-    });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "failed to create user" });
-  }
-});
 
 // updating user name
 

@@ -35,7 +35,32 @@ const getUserById = async (req, res) => {
   }
 };
 
+// adding | creating user
+
+const createUser = async (req, res) => {
+  try {
+    const { name, email, password } = req.body;
+
+    const [result] = await pool.execute(
+      "INSERT INTO users (name, email, password) VALUES (?, ?, ?)",
+      [name, email, password],
+    );
+
+    res.status(201).json({
+      message: "User created",
+      userId: result.insertId,
+    });
+  } catch (err) {
+    console.error(err);
+
+    res.status(500).json({
+      message: "Failed to create user",
+    });
+  }
+};
+
 module.exports = {
   getUsers,
   getUserById,
+  createUser,
 };
