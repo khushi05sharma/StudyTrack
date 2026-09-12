@@ -1,5 +1,7 @@
+// Job: Start and organize the Express app
 const express = require("express");
 const pool = require("./db");
+const userRoutes = require("./routes/userRoutes");
 
 const app = express();
 
@@ -12,19 +14,8 @@ app.get("/", (req, res) => {
 });
 
 // read / checking users
-
-app.get("/api/users", async (req, res) => {
-  try {
-    const [rows] = await pool.execute("SELECT id, name, email FROM users");
-
-    res.json(rows);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({
-      message: "Failed to fetch users",
-    });
-  }
-});
+// Requests beginning with /api/users should go to userRoutes
+app.use("/api/users", userRoutes);
 
 // read / checking user with id
 
