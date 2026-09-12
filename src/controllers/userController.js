@@ -59,8 +59,38 @@ const createUser = async (req, res) => {
   }
 };
 
+// updating user name
+
+const updateUser = async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const { name } = req.body;
+
+    const [result] = await pool.execute(
+      "UPDATE users SET name = ? WHERE id = ?",
+      [name, userId],
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({
+        message: "User not found",
+      });
+    }
+    res.json({
+      message: "User updated successfully",
+    });
+  } catch (err) {
+    console.error(err);
+
+    res.status(500).json({
+      message: "Failed to update user",
+    });
+  }
+};
+
 module.exports = {
   getUsers,
   getUserById,
   createUser,
+  updateUser,
 };
