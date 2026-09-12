@@ -13,11 +13,9 @@ app.get("/", (req, res) => {
   res.send("studytrack backend is working");
 });
 
-// read / checking users
 // Requests beginning with /api/users should go to userRoutes
 app.use("/api/users", userRoutes);
 
-// read / checking user with id
 
 app.get("/api/users/:id", async (req, res) => {
   try {
