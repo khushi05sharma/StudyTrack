@@ -5,7 +5,7 @@ const pool = require("../db");
 const getCourses = async (req, res) => {
   try {
     const [rows] = await pool.execute(
-      "SELECT id, title, description, instructor",
+      "SELECT id, title, description, instructor FROM courses",
     );
 
     res.json(rows);

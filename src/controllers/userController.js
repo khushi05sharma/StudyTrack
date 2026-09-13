@@ -1,5 +1,5 @@
 // Job: Actually perform the operation
-const pool = require("./db");
+const pool = require("../db");
 
 // get all users | read
 const getUsers = async (req, res) => {

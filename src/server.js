@@ -16,7 +16,7 @@ app.get("/", (req, res) => {
 
 // Requests beginning with /api/users should go to userRoutes
 app.use("/api/users", userRoutes);
-// Requests beginning with /api/users should go to userRoutes
+// Requests beginning with /api/courses should go to courseRoutes
 app.use("/api/courses", courseRoutes);
 
 app.listen(port, async () => {
