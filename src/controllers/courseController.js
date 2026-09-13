@@ -21,7 +21,7 @@ const getCourses = async (req, res) => {
 // GET course by ID
 const getCourseById = async (req, res) => {
   try {
-    const userId = req.params.id;
+    const courseId = req.params.id;
     const [rows] = await pool.execute(
       "SELECT id, title, description, instructor FROM courses WHERE id = ?",
       [courseId],
@@ -66,8 +66,38 @@ const createCourse = async (req, res) => {
   }
 };
 
+// UPDATE course
+const updateCourse = async (req, res) => {
+  try {
+    const courseId = req.params.id;
+    const { title, description, instructor } = req.body;
+
+    const [result] = await pool.execute(
+      `UPDATE courses SET title = ?, description = ?, instructor = ? WHERE id = ?`,
+      [title, description, instructor, courseId],
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({
+        message: "Course not found",
+      });
+    }
+
+    res.json({
+      message: "Course updated successfully",
+    });
+  } catch (err) {
+    console.error(err);
+
+    res.status(500).json({
+      message: "Failed to update course",
+    });
+  }
+};
+
 module.exports = {
   getCourses,
   getCourseById,
   createCourse,
+  updateCourse,
 };
