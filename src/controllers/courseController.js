@@ -95,9 +95,37 @@ const updateCourse = async (req, res) => {
   }
 };
 
+// DELETE course
+const deleteCourse = async (req, res) => {
+  try {
+    const courseId = req.params.id;
+
+    const [result] = await pool.execute("DELETE FROM courses WHERE id = ?", [
+      courseId,
+    ]);
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({
+        message: "Course not found",
+      });
+    }
+
+    res.json({
+      message: "Course deleted successfully",
+    });
+  } catch (err) {
+    console.error(err);
+
+    res.status(500).json({
+      message: "Failed to delete course",
+    });
+  }
+};
+
 module.exports = {
   getCourses,
   getCourseById,
   createCourse,
   updateCourse,
+  deleteCourse,
 };
