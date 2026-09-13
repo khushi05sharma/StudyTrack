@@ -43,7 +43,31 @@ const getCourseById = async (req, res) => {
   }
 };
 
+//create course
+const createCourse = async (req, res) => {
+  try {
+    const { title, description, instructor } = req.body;
+
+    const [result] = await pool.execute(
+      "INSERT INTO courses (title, description, instructor) VALUES (?, ?, ?)",
+      [title, description, instructor],
+    );
+
+    res.status(201).json({
+      message: "Course created successfully",
+      courseId: result.insertId,
+    });
+  } catch (err) {
+    console.error(err);
+
+    res.status(500).json({
+      message: "Failed to create course",
+    });
+  }
+};
+
 module.exports = {
   getCourses,
   getCourseById,
+  createCourse,
 };
