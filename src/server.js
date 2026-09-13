@@ -18,61 +18,6 @@ app.use("/api/users", userRoutes);
 
 
 
-// updating user name
-
-app.put("/api/users/:id", async (req, res) => {
-  try {
-    const userId = req.params.id;
-    const { name } = req.body;
-
-    const [result] = await pool.execute(
-      "UPDATE users SET name = ? WHERE id = ?",
-      [name, userId],
-    );
-
-    console.log("user name updated successfully");
-
-    res.json({
-      message: "User updated successfully",
-      affectedRows: result.affectedRows,
-    });
-  } catch (err) {
-    console.error(err);
-
-    res.status(500).json({
-      message: "Failed to update user",
-    });
-  }
-});
-
-// delete user
-
-app.delete("/api/users/:id", async (req, res) => {
-  try {
-    const userId = req.params.id;
-
-    const [result] = await pool.execute("DELETE FROM users WHERE id = ?", [
-      userId,
-    ]);
-
-    if (result.affectedRows === 0) {
-      return res.status(404).json({
-        message: "User not found",
-      });
-    }
-
-    res.json({
-      message: "User deleted successfully",
-    });
-  } catch (err) {
-    console.error(err);
-
-    res.status(500).json({
-      message: "Failed to delete user",
-    });
-  }
-});
-
 app.listen(port, async () => {
   console.log(`Server running on http://localhost:${port}`);
 
