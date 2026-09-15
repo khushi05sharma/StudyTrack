@@ -3,6 +3,7 @@ const express = require("express");
 const pool = require("./db");
 const userRoutes = require("./routes/userRoutes");
 const courseRoutes = require("./routes/courseRoutes");
+const enrollmentRoutes = require("./routes/enrollmentRoutes");
 
 const app = express();
 
@@ -18,6 +19,7 @@ app.get("/", (req, res) => {
 app.use("/api/users", userRoutes);
 // Requests beginning with /api/courses should go to courseRoutes
 app.use("/api/courses", courseRoutes);
+app.use("/api/enrollments", enrollmentRoutes);
 
 app.listen(port, async () => {
   console.log(`Server running on http://localhost:${port}`);
