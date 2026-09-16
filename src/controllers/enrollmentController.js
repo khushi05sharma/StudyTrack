@@ -57,6 +57,25 @@ const getEnrollmentById = async (req, res) => {
   }
 };
 
+// CREATE enrollment
+const createEnrollment = async (req, res) => {
+  try {
+    const { user_id, course_id } = req.body;
+
+    const [result] = await pool.execute(
+      "INSERT INTO enrollments (user_id, course_id) VALUES (?, ?)",
+      [user_id, course_id],
+    );
+
+    return res
+      .status(201)
+      .json({
+        message: "enrollment created successfully",
+        enrollmentId: result.insertId,
+      });
+  } catch (err) {}
+};
+
 module.exports = {
   getEnrollments,
 };
