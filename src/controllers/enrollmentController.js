@@ -124,4 +124,7 @@ const deleteEnrollment = async (req, res) => {
 
 module.exports = {
   getEnrollments,
+  getEnrollmentById,
+  createEnrollment,
+  deleteEnrollment,
 };
