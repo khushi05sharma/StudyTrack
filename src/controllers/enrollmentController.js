@@ -22,3 +22,7 @@ const getEnrollments = async (req, res) => {
     });
   }
 };
+
+module.exports = {
+  getEnrollments,
+};
