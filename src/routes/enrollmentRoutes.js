@@ -9,5 +9,8 @@ const {
 } = require("../controllers/enrollmentController");
 
 router.get("/", getEnrollments);
+router.get("/:id", getEnrollmentById);
+router.post("/", createEnrollment);
+router.delete("/:id", deleteEnrollment);
 
 module.exports = router;
