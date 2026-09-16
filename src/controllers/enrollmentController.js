@@ -67,13 +67,31 @@ const createEnrollment = async (req, res) => {
       [user_id, course_id],
     );
 
-    return res
-      .status(201)
-      .json({
-        message: "enrollment created successfully",
-        enrollmentId: result.insertId,
+    return res.status(201).json({
+      message: "enrollment created successfully",
+      enrollmentId: result.insertId,
+    });
+  } catch (err) {
+    console.error(err);
+
+    // Duplicate enrollment
+    if (err.code === "ER_DUP_ENTRY") {
+      return res.status(409).json({
+        message: "User is already enrolled in this course",
       });
-  } catch (err) {}
+    }
+
+    // Invalid user_id or course_id
+    if (err.code === "ER_NO_REFERENCED_ROW_2") {
+      return res.status(400).json({
+        message: "Invalid user_id or course_id",
+      });
+    }
+
+    res.status(500).json({
+      message: "Failed to create enrollment",
+    });
+  }
 };
 
 module.exports = {
