@@ -94,6 +94,34 @@ const createEnrollment = async (req, res) => {
   }
 };
 
+// DELETE enrollment
+const deleteEnrollment = async (req, res) => {
+  try {
+    const enrollmentId = req.params.id;
+
+    const [result] = await pool.execute(
+      "DELETE FROM enrollments WHERE id = ?",
+      [enrollmentId],
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({
+        message: "Enrollment not found",
+      });
+    }
+
+    res.json({
+      message: "Enrollment deleted successfully",
+    });
+  } catch (err) {
+    console.error(err);
+
+    res.status(500).json({
+      message: "Failed to delete enrollment",
+    });
+  }
+};
+
 module.exports = {
   getEnrollments,
 };
