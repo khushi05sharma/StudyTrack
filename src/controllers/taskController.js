@@ -70,7 +70,38 @@ const getTasksById = async (req, res) => {
   }
 };
 
+// CREATE task
+const createTask = async (req, res) => {
+  try {
+    const { enrollment_id, title, description, status, due_date } = req.body;
+
+    const [result] = await pool.execute(
+      `
+        INSERT INTO tasks (enrollment_id, title, description, status, due_date) VALUES = ?, ?, ?, ?, ?
+        `,
+      [enrollment_id, title, description, status || "pending", due_date],
+    );
+
+    res
+      .status(201)
+      .json({ message: "task created successfully", taskId: result.insertId });
+  } catch (err) {
+    console.error(err);
+
+    if (err.code === "ER_NO_REFERENCED_ROW_2") {
+      return res.status(400).json({
+        message: "Invalid enrollment_id",
+      });
+    }
+
+    res.status(500).json({
+      message: "Failed to create task",
+    });
+  }
+};
+
 module.exports = {
   getTasks,
   getTasksById,
+  createTask,
 };
