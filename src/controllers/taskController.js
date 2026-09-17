@@ -100,8 +100,69 @@ const createTask = async (req, res) => {
   }
 };
 
+// UPDATE task
+const updateTask = async (req, res) => {
+  try {
+    const taskId = req.params.id;
+
+    const { title, description, status, due_date } = req.body;
+
+    const [result] = await pool.execute(
+      `UPDATE tasks
+       SET title = ?, description = ?, status = ?, due_date = ?
+       WHERE id = ?`,
+      [title, description, status, due_date, taskId],
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({
+        message: "Task not found",
+      });
+    }
+
+    res.json({
+      message: "Task updated successfully",
+    });
+  } catch (err) {
+    console.error(err);
+
+    res.status(500).json({
+      message: "Failed to update task",
+    });
+  }
+};
+
+// DELETE task
+const deleteTask = async (req, res) => {
+  try {
+    const taskId = req.params.id;
+
+    const [result] = await pool.execute("DELETE FROM tasks WHERE id = ?", [
+      taskId,
+    ]);
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({
+        message: "Task not found",
+      });
+    }
+
+    res.json({
+      message: "Task deleted successfully",
+    });
+  } catch (err) {
+    console.error(err);
+
+    res.status(500).json({
+      message: "Failed to delete task",
+    });
+  }
+};
+
 module.exports = {
   getTasks,
   getTasksById,
   createTask,
+  updateTask,
+  deleteTask,
 };
