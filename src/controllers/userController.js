@@ -25,7 +25,7 @@ const getUserById = async (req, res) => {
       [userId],
     );
 
-    res.json(rows);
+    res.json(rows[0]);
   } catch (err) {
     console.error(err);
 
