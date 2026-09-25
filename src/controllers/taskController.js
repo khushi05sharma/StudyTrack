@@ -30,7 +30,7 @@ const getTasks = async (req, res) => {
 };
 
 // GET task by ID
-const getTasksById = async (req, res) => {
+const getTaskById = async (req, res) => {
   try {
     const taskId = req.params.id;
 
@@ -77,7 +77,7 @@ const createTask = async (req, res) => {
 
     const [result] = await pool.execute(
       `
-        INSERT INTO tasks (enrollment_id, title, description, status, due_date) VALUES = ?, ?, ?, ?, ?
+        INSERT INTO tasks (enrollment_id, title, description, status, due_date) VALUES ( ?, ?, ?, ?, ?)
         `,
       [enrollment_id, title, description, status || "pending", due_date],
     );
@@ -161,7 +161,7 @@ const deleteTask = async (req, res) => {
 
 module.exports = {
   getTasks,
-  getTasksById,
+  getTaskById,
   createTask,
   updateTask,
   deleteTask,

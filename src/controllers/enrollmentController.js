@@ -1,4 +1,3 @@
-const e = require("express");
 const pool = require("../db");
 
 const getEnrollments = async (req, res) => {
@@ -8,7 +7,8 @@ const getEnrollments = async (req, res) => {
             e.id AS enrollment_id,
             u.name AS user_name,
             c.title AS course_title,
-            e.enrolled_at            FROM enrollments e
+            e.enrolled_at            
+            FROM enrollments e
             JOIN users u ON e.user_id = u.id
             JOIN courses c ON e.course_id = c.id
             `);
