@@ -75,6 +75,12 @@ const createTask = async (req, res) => {
   try {
     const { enrollment_id, title, description, status, due_date } = req.body;
 
+    if (!enrollment_id || !title) {
+      return res.status(400).json({
+        message: "enrollment_id and title are required",
+      });
+    }
+
     const [result] = await pool.execute(
       `
         INSERT INTO tasks (enrollment_id, title, description, status, due_date) VALUES ( ?, ?, ?, ?, ?)
